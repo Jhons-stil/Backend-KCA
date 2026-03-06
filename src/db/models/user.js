@@ -19,9 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      nama: {
-        type: DataTypes.STRING(100),
-      },
       username: {
         type: DataTypes.STRING(50),
         unique: true,
