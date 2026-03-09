@@ -57,6 +57,8 @@ const cekFinance = [
     .withMessage("Format tanggal tidak valid"),
 
   body("note")
+    .notEmpty()
+    .withMessage("note wajib diisi")
     .optional()
     .isString()
     .withMessage("Note harus berupa teks"),
