@@ -5,7 +5,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs/promises");
-const { tambahUser, findUsername, tampilUser } = require("./service");
+const {
+  tambahUser,
+  findUsername,
+  tampilUser,
+  cariUserById,
+  ubahUser,
+} = require("./service");
 const { resSukses, resGagal } = require("../../payloads/payload.js");
 const token = require("../../payloads/tknJwt.js");
 
@@ -65,4 +71,49 @@ const readUser = async (req, res) => {
     return resGagal(res, 500, "error", error.message);
   }
 };
-module.exports = { register, login, readUser };
+
+const updateUser = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const { username, email } = req.body;
+    const profile = req.file ? path.basename(req.file.path) : undefined;
+    const dataNew = {
+      username: username || user.username,
+      email: email || user.email,
+      profile: profile ? req.file.filename : user.profile,
+    };
+
+    if (req.file && user.profile) {
+      if (user && user.profile) {
+        const fotoLama = path.join(__dirname, "../../uploads", user.profile);
+        try {
+          await fs.access(fotoLama);
+          await fs.unlink(fotoLama);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    }
+
+    const data = await ubahUser(user.id, dataNew);
+    return resSukses(res, 200, "success", "Data berhasil diubah", data);
+  } catch (error) {
+    return resGagal(res, 500, "error", error.message);
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { passwordBaru } = req.body;
+
+    const passwordAcak = await bcrypt.hash(passwordBaru, 10);
+    const body = { password: passwordAcak };
+    await ubahUser(req.user.id, body);
+    return resSukses(res, 200, "success", "Password berhasil diubah");
+  } catch (error) {
+    return resGagal(res, 500, "error", error.message);
+  }
+};
+
+module.exports = { register, login, readUser, updateUser, updatePassword };
