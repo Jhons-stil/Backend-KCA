@@ -1,6 +1,5 @@
 require("dotenv");
-const db = require("../../db/models/index.js");
-const { User } = db;
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
@@ -9,7 +8,7 @@ const {
   tambahUser,
   findUsername,
   tampilUser,
-  cariUserById,
+
   ubahUser,
 } = require("./service");
 const { resSukses, resGagal } = require("../../payloads/payload.js");
