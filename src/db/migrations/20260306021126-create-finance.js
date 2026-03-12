@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('finance', {
+    await queryInterface.createTable("finance", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-  
+
       user_id: {
         type: Sequelize.INTEGER,
         references: {
@@ -19,18 +19,18 @@ module.exports = {
       },
 
       type: {
-        type: Sequelize.ENUM("Pemasukan", "Pengeluaran"),
+        type: Sequelize.ENUM("pemasukan", "pengeluaran"),
       },
 
       category: {
         type: Sequelize.STRING(100),
       },
 
-      amount :{
-        type: Sequelize.DECIMAL(10,2),
+      amount: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      
+
       date: {
         type: Sequelize.DATE,
       },
@@ -48,10 +48,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('finance');
-  }
+    await queryInterface.dropTable("finance");
+  },
 };
