@@ -1,24 +1,34 @@
-const cekFinance = [
-  body("type").notEmpty().withMessage("Type wajib diisi"),
+const { body } = require("express-validator");
 
-  body("category").notEmpty().withMessage("Category wajib diisi"),
+const cekFinance = [
+  body("type")
+    .optional({ checkFalsy: true })
+    .isString()
+    .withMessage("Type harus berupa text")
+    .bail()
+    .trim()
+    .toLowerCase()
+    .isIn(["pemasukan", "pengeluaran"])
+    .withMessage("type harus pilih salah satu: pemasukan atau pengeluaran"),
+
+  body("category")
+    .optional({ checkFalsy: true })
+    .isString()
+    .withMessage("Category harus berupa text"),
 
   body("amount")
-    .notEmpty()
-    .withMessage("Amount wajib diisi")
+    .optional({ checkFalsy: true })
     .isNumeric()
     .withMessage("Amount harus berupa angka"),
 
   body("date")
-    .notEmpty()
-    .withMessage("Tanggal wajib diisi")
-    .isDate()
+    .optional({ checkFalsy: true })
+    .isDate({ format: "DD-MM-YYYY" })
     .withMessage("Format tanggal tidak valid"),
 
   body("note")
-    .notEmpty()
-    .withMessage("note wajib diisi")
-    .optional()
+    .optional({ checkFalsy: true })
+
     .isString()
     .withMessage("Note harus berupa teks"),
 ];

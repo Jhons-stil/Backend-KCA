@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Finance extends Model {
     /**
@@ -10,20 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-    Finance.belongsTo(models.User, {
-      foreignKey: "user_id",
-      as:"user"
-    });
+      Finance.belongsTo(models.User, {
+        foreignKey: "user_id",
+        as: "user",
+      });
     }
   }
-  Finance.init({
-    id: {
+  Finance.init(
+    {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
-  
+
       user_id: {
         type: DataTypes.INTEGER,
         references: {
@@ -33,18 +32,18 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       type: {
-        type: DataTypes.ENUM("Pemasukan", "Pengeluaran"),
+        type: DataTypes.ENUM("pemasukan", "pengeluaran"),
       },
 
       category: {
         type: DataTypes.STRING(100),
       },
 
-      amount :{
-        type: DataTypes.DECIMAL(10,2),
+      amount: {
+        type: DataTypes.DECIMAL,
         allowNull: false,
       },
-      
+
       date: {
         type: DataTypes.DATE,
       },
@@ -52,10 +51,12 @@ module.exports = (sequelize, DataTypes) => {
       note: {
         type: DataTypes.TEXT,
       },
-  }, {
-    sequelize,
-    modelName: 'Finance',
-    tableName: 'finance',
-  });
+    },
+    {
+      sequelize,
+      modelName: "Finance",
+      tableName: "finance",
+    },
+  );
   return Finance;
 };
