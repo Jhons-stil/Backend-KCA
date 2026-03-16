@@ -4,9 +4,7 @@ const {
   ubahFinance,
   hapusFinance,
   cariFinanceById,
-} = require("../finance/service.js")
-
-
+} = require("../finance/service.js");
 
 const { resSukses, resGagal } = require("../../payloads/payload.js");
 
@@ -46,21 +44,27 @@ const updateFinance = async (req, res) => {
 
     const dataFinance = await cariFinanceById(id);
 
+    if (!dataFinance) {
+      return resGagal(res, 404, "error", "Maaf data tidak ditemukan");
+    }
+
     if (dataFinance.user_id !== user_id) {
       return resGagal(res, 403, "error", "Maaf, akses ditolak");
     }
     const { type, category, amount, date, note } = req.body;
-
     const updateData = {};
 
-    if (type && type.trim() !== "") updateData.type = type.toLowerCase().trim();
-    if (category && category.trim() !== "") updateData.category = category;
-    if (amount) updateData.amount = amount;
-    if (note !== undefined) updateData.note = note;
+    updateData.type = type ? type.toLowerCase().trim() : dataFinance.type;
+    updateData.category = category ? category : dataFinance.category;
+    updateData.amount = amount ? amount : dataFinance.amount;
+    updateData.date = date ? date : dataFinance.date;
+    updateData.note = note ? note : dataFinance.note;
 
-    if (date && date.trim() !== "") {
+    if (date) {
       const [day, month, year] = date.split("-");
       updateData.date = `${year}-${month}-${day}`;
+    } else {
+      updateData.date = dataFinance.date;
     }
 
     const data = await ubahFinance(id, updateData);
@@ -88,13 +92,9 @@ const deleteFinance = async (req, res) => {
   }
 };
 
-
-
-
 module.exports = {
   getAllFinance,
   createFinance,
   updateFinance,
   deleteFinance,
 };
-

@@ -29,7 +29,7 @@ const verifyToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return resGagal(res, 500, "error");
+    return resGagal(res, 500, "error", error.message);
   }
 };
 module.exports = verifyToken;

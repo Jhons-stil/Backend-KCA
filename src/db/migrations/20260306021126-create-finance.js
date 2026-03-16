@@ -33,6 +33,7 @@ module.exports = {
 
       date: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
 
       note: {

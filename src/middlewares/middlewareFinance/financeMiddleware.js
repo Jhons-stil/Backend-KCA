@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-const cekFinance = [
+const cekFinanceUpdate = [
   body("type")
     .optional({ checkFalsy: true })
     .isString()
@@ -23,7 +23,7 @@ const cekFinance = [
 
   body("date")
     .optional({ checkFalsy: true })
-    .isDate({ format: "DD-MM-YYYY" })
+    .isDate()
     .withMessage("Format tanggal tidak valid"),
 
   body("note")
@@ -33,4 +33,23 @@ const cekFinance = [
     .withMessage("Note harus berupa teks"),
 ];
 
-module.exports = { cekFinance };
+const cekFinanceCreate = [
+  body("type")
+    .notEmpty()
+    .withMessage("Type wajib diisi")
+    .bail()
+    .trim()
+    .toLowerCase()
+    .isIn(["pemasukan", "pengeluaran"])
+    .withMessage("type harus pilih salah satu: pemasukan atau pengeluaran"),
+
+  body("category").notEmpty().withMessage("Category wajib diisi"),
+
+  body("amount").notEmpty().withMessage("Amount wajib diisi"),
+
+  body("date").notEmpty().withMessage("Date wajib diisi"),
+
+  body("note").notEmpty().withMessage("Note wajib diisi"),
+];
+
+module.exports = { cekFinanceUpdate, cekFinanceCreate };

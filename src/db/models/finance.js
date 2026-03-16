@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
 
       date: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
 
       note: {

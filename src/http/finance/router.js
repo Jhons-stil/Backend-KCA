@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  cekFinance,
+  cekFinanceCreate,
+  cekFinanceUpdate,
 } = require("../../middlewares/middlewareFinance/financeMiddleware.js");
 
 const {
@@ -13,11 +14,19 @@ const {
 } = require("./controller.js");
 
 const verifyToken = require("../../middlewares/midlewareJwt/jwtMiddleware.js");
-const { cekError } = require("../../middlewares/middlewareUser/usermiddleware.js");
+const {
+  cekError,
+} = require("../../middlewares/middlewareUser/usermiddleware.js");
 
 router.get("/", verifyToken, getAllFinance);
-router.post("/create", verifyToken, cekFinance, cekError, createFinance);
-router.patch("/update/:id", verifyToken, cekFinance, cekError, updateFinance);
+router.post("/create", verifyToken, cekFinanceCreate, cekError, createFinance);
+router.patch(
+  "/update/:id",
+  verifyToken,
+  cekFinanceUpdate,
+  cekError,
+  updateFinance,
+);
 router.delete("/delete/:id", verifyToken, deleteFinance);
 
 module.exports = router;
