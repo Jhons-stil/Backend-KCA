@@ -37,13 +37,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       status: {
-        type: DataTypes.ENUM("selesai", "belum selesai"),
-        defaultValue: "belum selesai",
+        type: DataTypes.ENUM("1", "2"),
+        defaultValue: "1",
+      },
+      categories: {
+        type: DataTypes.ENUM("kesehatan", "ibadah", "produktif"),
       },
       mood_rating: {
         type: DataTypes.ENUM("1", "2", "3", "4", "5"),
         defaultValue: "1",
       },
+
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
