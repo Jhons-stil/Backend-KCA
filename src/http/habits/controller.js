@@ -1,10 +1,11 @@
 const {
   tambahHabits,
   tampilHabits,
-  cariHabitsById,
+
   ubahHabits,
   hapusHabits,
   findHabits,
+  cariHabitsById,
 } = require("./service.js");
 
 const { resSukses, resGagal } = require("../../payloads/payload.js");
@@ -19,28 +20,20 @@ const readHabits = async (req, res) => {
   }
 };
 
-const getHabitsById = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const data = await cariHabitsById(id);
-    return resSukses(res, 200, "success", "Data berdasarkan ID", data);
-  } catch (error) {
-    return resGagal(res, 500, "error", error.message);
-  }
-};
-
 const createHabits = async (req, res) => {
   try {
     const { habit_name, target_frequency } = req.body;
     const user_id = req.user.id;
 
-    const data = await tambahHabits({
+    const body = {
       user_id,
       habit_name,
       target_frequency,
       current_streak: 0,
       last_completed: null,
-    });
+    };
+
+    const data = await tambahHabits(body);
     return resSukses(res, 201, "success", "Habit berhasil ditambahkan", data);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
@@ -50,15 +43,35 @@ const createHabits = async (req, res) => {
 const updateHabits = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    const userId = req.user.id;
 
-    const { habit_name, target_frequency } = req.body;
+    const dataHabits = await cariHabitsById(id);
 
-    const body = {
-      habit_name,
-      target_frequency,
-    };
+    if (!dataHabits) {
+      return resGagal(res, 404, "error", "Maaf, data tidak ditemukan");
+    }
 
-    const data = await ubahHabits(id, body);
+    if (dataHabits.user_id !== userId) {
+      return resGagal(res, 403, "error", "Maaf, akses ditolak!!");
+    }
+
+    const { habit_name, target_frequency, current_streak, last_completed } =
+      req.body;
+
+    const updateData = {};
+
+    updateData.habit_name = habit_name ? habit_name : dataHabits.habit_name;
+    updateData.target_frequency = target_frequency
+      ? target_frequency
+      : dataHabits.target_frequency;
+    updateData.current_streak = current_streak
+      ? current_streak
+      : dataHabits.current_streak;
+    updateData.last_completed = last_completed
+      ? last_completed
+      : dataHabits.last_completed;
+
+    const data = await ubahHabits(id, updateData);
     return resSukses(res, 200, "success", "Data berhasil diubah", data);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
@@ -75,26 +88,9 @@ const deleteHabits = async (req, res) => {
   }
 };
 
-const getHabitsByUser = async (req, res) => {
-  try {
-    const user_id = req.user.id;
-
-    const data = await findHabits(user_id);
-
-    if (!data || data.length === 0) {
-      return resGagal(res, 404, "error", "Data tidak ditemukan");
-    }
-    return resSukses(res, 200, "success", "Data habits user", data);
-  } catch (error) {
-    return resGagal(res, 500, "error", error.message);
-  }
-};
-
 module.exports = {
   readHabits,
-  getHabitsById,
   createHabits,
   updateHabits,
   deleteHabits,
-  getHabitsByUser,
 };

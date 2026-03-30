@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('habits', {
+    await queryInterface.createTable("habits", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
 
-       user_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "user",
@@ -19,23 +19,23 @@ module.exports = {
       },
       habit_name: {
         type: Sequelize.STRING(100),
-        allowNull:false,
+        allowNull: false,
       },
 
       target_frequency: {
         type: Sequelize.ENUM("harian", "mingguan"),
-        allowNull:false,
+        allowNull: false,
       },
 
       current_streak: {
         type: Sequelize.INTEGER,
-        allowNull:true,
+        allowNull: true,
         defaultValue: 0,
       },
 
       last_completed: {
         type: Sequelize.DATEONLY,
-        allowNull:true,
+        allowNull: true,
       },
 
       createdAt: {
@@ -47,10 +47,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('habits');
-  }
+    await queryInterface.dropTable("habits");
+  },
 };

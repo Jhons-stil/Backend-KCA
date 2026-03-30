@@ -5,17 +5,32 @@ const {
   cekHabits,
 
   cekId,
+  cekHabitsUpdate,
 } = require("../../middlewares/middlewareHabits/habitsMiddleware.js");
 
-const { getAllHabits, getHabitsById, createHabits, updateHabits, deleteHabits, getHabitsByUser } = require("./controller.js");
-const verifyToken = require("../../middlewares/midlewareJwt/jwtMiddleware.js");
-const { cekError } = require("../../middlewares/middlewareUser/usermiddleware.js");
+const {
+  readHabits,
 
-router.get("/", verifyToken, getAllHabits);
-router.get("/my-habits", verifyToken, getHabitsByUser);
-router.get("/:id", verifyToken, cekId, getHabitsById);
+  createHabits,
+  updateHabits,
+  deleteHabits,
+  // getHabitsByUser,
+} = require("./controller.js");
+const verifyToken = require("../../middlewares/midlewareJwt/jwtMiddleware.js");
+const {
+  cekError,
+} = require("../../middlewares/middlewareUser/usermiddleware.js");
+
+router.get("/", verifyToken, readHabits);
+// router.get("/my-habits", verifyToken, getHabitsByUser);
 router.post("/create", verifyToken, cekHabits, cekError, createHabits);
-router.patch("/update/:id", verifyToken, cekHabits, cekId, cekError, updateHabits);
-router.delete("/delete/:id", verifyToken, cekId, deleteHabits);
+router.patch(
+  "/update/:id",
+  verifyToken,
+  cekHabitsUpdate,
+  cekError,
+  updateHabits,
+);
+router.delete("/delete/:id", verifyToken, deleteHabits);
 
 module.exports = router;
