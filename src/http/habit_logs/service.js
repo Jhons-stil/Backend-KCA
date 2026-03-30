@@ -2,7 +2,7 @@ const db = require("../../db/models");
 
 const { HabitLogs } = db;
 
-const tampilHabitLogs = async () => {
+const tampilHabitLogs = async (userId) => {
   return await HabitLogs.findAll({
     where: { habit_id },
     order: [["date", "DESC"]],

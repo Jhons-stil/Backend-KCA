@@ -10,7 +10,8 @@ const { cariHabitsById, ubahHabits } = require("../habits/service.js");
 
 const getAllHabitLogs = async (req, res) => {
   try {
-    const data = await tampilHabitLogs();
+    const userId = req.user.id;
+    const data = await tampilHabitLogs(userId);
     return resSukses(res, 201, "success", data);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);

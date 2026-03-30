@@ -25,9 +25,9 @@ const hapusUser = async (id) => {
     where: { id: id },
   });
 };
-const findUsername = async (username) => {
+const findEmail = async (email) => {
   return await User.findOne({
-    where: { username },
+    where: { email },
   });
 };
 
@@ -37,5 +37,5 @@ module.exports = {
   cariUserById,
   ubahUser,
   hapusUser,
-  findUsername,
+  findEmail,
 };
