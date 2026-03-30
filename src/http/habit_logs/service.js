@@ -9,10 +9,6 @@ const tampilHabitLogs = async () => {
   });
 };
 
-const cariHabitLogsById = async (id) => {
-  return await HabitLogs.findByPk(id);
-};
-
 const tambahHabitLogs = async (body) => {
   return await HabitLogs.create(body);
 };
@@ -30,7 +26,6 @@ const hapusHabitLogs = async (id) => {
 
 module.exports = {
   tampilHabitLogs,
-  cariHabitLogsById,
 
   tambahHabitLogs,
   ubahHabitLogs,

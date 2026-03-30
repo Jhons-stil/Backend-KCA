@@ -1,4 +1,9 @@
-const { tampilHabitLogs, cariHabitLogsById, cariLogsByHabit, tambahHabitLogs, ubahHabitLogs, hapusHabitLogs } = require("./service.js");
+const {
+  tampilHabitLogs,
+  tambahHabitLogs,
+  ubahHabitLogs,
+  hapusHabitLogs,
+} = require("./service.js");
 
 const { resSukses, resGagal } = require("../../payloads/payload.js");
 const { cariHabitsById, ubahHabits } = require("../habits/service.js");
@@ -7,16 +12,6 @@ const getAllHabitLogs = async (req, res) => {
   try {
     const data = await tampilHabitLogs();
     return resSukses(res, 201, "success", data);
-  } catch (error) {
-    return resGagal(res, 500, "error", error.message);
-  }
-};
-
-const getHabitLogsById = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const data = await cariHabitLogsById(id);
-    return resSukses(res, 200, "success", data);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
   }
@@ -98,7 +93,6 @@ const getLogsByHabit = async (req, res) => {
 };
 module.exports = {
   getAllHabitLogs,
-  getHabitLogsById,
   createHabitLogs,
   updateHabitLogs,
   deleteHabitLogs,
