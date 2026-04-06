@@ -12,7 +12,7 @@ const getAllHabitLogs = async (req, res) => {
   try {
     const userId = req.user.id;
     const data = await tampilHabitLogs(userId);
-    return resSukses(res, 201, "success", data);
+    return resSukses(res, 200, "success", data);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
   }

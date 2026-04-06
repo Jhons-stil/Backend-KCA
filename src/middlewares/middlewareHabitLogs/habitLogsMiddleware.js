@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const { resGagal } = require("../../payloads/payload.js");
-const { cariHabitLogsById } = require("../../http/habit_logs/service.js")
+const { cariHabitLogsById } = require("../../http/habit_logs/service.js");
 
 const cekId = async (req, res, next) => {
   try {
@@ -33,25 +33,24 @@ const cekError = (req, res, next) => {
 };
 
 const validateCreateHabitLogs = [
-    body("status")
+  body("status")
     .notEmpty()
     .withMessage("status wajib diisi")
     .bail()
     .isIn(["done", "miss"])
-    .withMessage("status hanya boleh done atau miss"), 
+    .withMessage("status hanya boleh done atau miss"),
 ];
 
 const validateUpdateHabitLogs = [
   body("status")
-    .optional()
+    .optional({ checkFalsy: true })
     .isIn(["done", "miss"])
     .withMessage("status hanya boleh done atau skip"),
-]
+];
 
 module.exports = {
-    cekId,
-    cekError,
-    validateCreateHabitLogs,
-    validateUpdateHabitLogs
-}
-
+  cekId,
+  cekError,
+  validateCreateHabitLogs,
+  validateUpdateHabitLogs,
+};

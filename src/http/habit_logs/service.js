@@ -1,10 +1,16 @@
 const db = require("../../db/models");
 
-const { HabitLogs } = db;
+const { HabitLogs, Habits } = db;
 
 const tampilHabitLogs = async (userId) => {
   return await HabitLogs.findAll({
-    where: { habit_id },
+    includes: [
+      {
+        model: Habits,
+        where: { user_id: userId },
+        attributes: ["habit_name"],
+      },
+    ],
     order: [["date", "DESC"]],
   });
 };

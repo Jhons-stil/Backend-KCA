@@ -8,9 +8,9 @@ const {
 
 const createActivities = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, categories } = req.body;
     const user = req.user.id;
-    const body = { user_id: user, title, description };
+    const body = { user_id: user, title, description, categories };
     const data = await tambahActivities(body);
     return resSukses(
       res,
@@ -50,15 +50,16 @@ const updateActivities = async (req, res) => {
     if (dataActivities.user_id !== userId) {
       return resGagal(res, 403, "error", "Maaf, akses ditolak!!");
     }
-    const { title, status, mood_rating } = req.body;
+    const { title, description, status, categories } = req.body;
 
     const updateData = {};
 
     updateData.title = title ? title : dataActivities.title;
+    updateData.description = description
+      ? description
+      : dataActivities.description;
     updateData.status = status ? status : dataActivities.status;
-    updateData.mood_rating = mood_rating
-      ? mood_rating
-      : dataActivities.mood_rating;
+    updateData.categories = categories ? categories : dataActivities.categories;
 
     const data = await ubahActivities(id, updateData);
     return resSukses(res, 200, "success", "Data berhasil diubah", data);

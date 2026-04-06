@@ -21,7 +21,7 @@ const {
   cekError,
 } = require("../../middlewares/middlewareUser/usermiddleware.js");
 
-router.get("/habit/:id/logs", verifyToken, getLogsByHabit);
+router.get("/habit", verifyToken, getLogsByHabit);
 
 router.get("/", verifyToken, getAllHabitLogs);
 
