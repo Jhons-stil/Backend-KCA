@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("finance", {
+    await queryInterface.createTable("habits", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,27 +17,25 @@ module.exports = {
           key: "id",
         },
       },
-
-      type: {
-        type: Sequelize.ENUM("pemasukan", "pengeluaran"),
-      },
-
-      category: {
+      habit_name: {
         type: Sequelize.STRING(100),
-      },
-
-      amount: {
-        type: Sequelize.DECIMAL,
         allowNull: false,
       },
 
-      date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      target_frequency: {
+        type: Sequelize.ENUM("harian", "mingguan"),
+        allowNull: false,
       },
 
-      note: {
-        type: Sequelize.TEXT,
+      current_streak: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: 0,
+      },
+
+      last_completed: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
       },
 
       createdAt: {
@@ -53,6 +51,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("finance");
+    await queryInterface.dropTable("habits");
   },
 };

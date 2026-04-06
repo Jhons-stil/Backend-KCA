@@ -1,20 +1,25 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Finance extends Model {
+  class Habits extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Finance.belongsTo(models.User, {
-        foreignKey: "user_id",
-        as: "user",
-      });
+      Habits.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as:"user"
+    });
+
+    Habits.hasMany(models.HabitLogs,{
+      foreignKey: "habit_id",
+      as:"logs"
+    })
     }
   }
-  Finance.init(
+  Habits.init(
     {
       id: {
         allowNull: false,
@@ -31,33 +36,32 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      type: {
-        type: DataTypes.ENUM("pemasukan", "pengeluaran"),
-      },
-
-      category: {
+      habit_name: {
         type: DataTypes.STRING(100),
-      },
-
-      amount: {
-        type: DataTypes.DECIMAL,
         allowNull: false,
       },
 
-      date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+      target_frequency: {
+        type: DataTypes.ENUM("harian", "mingguan"),
+        allowNull: false,
       },
 
-      note: {
-        type: DataTypes.TEXT,
+      current_streak: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+
+      last_completed: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: "Finance",
-      tableName: "finance",
+      tableName: "habits",
+      modelName: "Habits",
     },
   );
-  return Finance;
+  return Habits;
 };

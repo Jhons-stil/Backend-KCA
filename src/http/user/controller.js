@@ -1,17 +1,10 @@
 require("dotenv");
-const db = require("../../db/models/index.js");
-const { User } = db;
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs/promises");
-const {
-  tambahUser,
-  findUsername,
-  tampilUser,
-  cariUserById,
-  ubahUser,
-} = require("./service");
+const { tambahUser, tampilUser, ubahUser, findEmail } = require("./service");
 const { resSukses, resGagal } = require("../../payloads/payload.js");
 const token = require("../../payloads/tknJwt.js");
 
@@ -35,8 +28,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await findUsername(username);
+    const { email, password } = req.body;
+    const user = await findEmail(email);
     if (user === null) {
       return resGagal(res, 500, "error", "Maaf, username tidak ditemukan");
     }

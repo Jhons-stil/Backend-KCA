@@ -26,13 +26,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       status: {
-        type: Sequelize.ENUM("selesai", "belum selesai"),
-        defaultValue: "belum selesai",
-      },
-      mood_rating: {
-        type: Sequelize.ENUM("1", "2", "3", "4", "5"),
+        type: Sequelize.ENUM("1", "2", "3"),
         defaultValue: "1",
       },
+      categories: {
+        type: Sequelize.ENUM("kesehatan", "produktif"),
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
