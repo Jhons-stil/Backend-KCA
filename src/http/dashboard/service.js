@@ -4,7 +4,7 @@ const { Finance, Activities, User } = db;
 const tampilDashboard = async (id) => {
   return await User.findByPk(id, {
     attributes: ["id", "username", "email"],
-    includes: [
+    include: [
       {
         model: Finance,
         as: "finance",
@@ -16,7 +16,12 @@ const tampilDashboard = async (id) => {
         model: Activities,
         as: "activities",
         attributes: ["id", "title", "description", "status", "categories"],
+        required: false,
       },
     ],
   });
+};
+
+module.exports = {
+  tampilDashboard,
 };

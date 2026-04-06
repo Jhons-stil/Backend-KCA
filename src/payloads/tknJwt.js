@@ -1,4 +1,4 @@
-  const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const token = (user) => {
   return jwt.sign(
     {
@@ -6,7 +6,7 @@ const token = (user) => {
       username: user.username,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1d" },
+    { expiresIn: "30d" },
   );
 };
 module.exports = token;

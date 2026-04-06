@@ -24,4 +24,4 @@ const cekActivitiesUpdate = [
     .withMessage("pilihannya cuman 1,2,3"),
 ];
 
-module.exports = { cekActivities };
+module.exports = { cekActivities, cekActivitiesUpdate };
