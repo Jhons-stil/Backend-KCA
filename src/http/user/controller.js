@@ -3,7 +3,7 @@ require("dotenv");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
-const fs = require("fs/promises");
+
 const { tambahUser, tampilUser, ubahUser, findEmail } = require("./service");
 const { resSukses, resGagal } = require("../../payloads/payload.js");
 const token = require("../../payloads/tknJwt.js");
@@ -70,24 +70,11 @@ const updateUser = async (req, res) => {
     const user = req.user;
 
     const { username, email } = req.body;
-    const profile = req.file ? path.basename(req.file.path) : undefined;
+
     const dataNew = {
       username: username || user.username,
       email: email || user.email,
-      profile: profile ? req.file.filename : user.profile,
     };
-
-    if (req.file && user.profile) {
-      if (user && user.profile) {
-        const fotoLama = path.join(__dirname, "../../uploads", user.profile);
-        try {
-          await fs.access(fotoLama);
-          await fs.unlink(fotoLama);
-        } catch (error) {
-          console.log(error.message);
-        }
-      }
-    }
 
     const data = await ubahUser(user.id, dataNew);
     return resSukses(res, 200, "success", "Data berhasil diubah", data);

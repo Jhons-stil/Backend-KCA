@@ -8,24 +8,13 @@ const bcrypt = require("bcrypt");
 const cekError = (req, res, next) => {
   const errors = validationResult(req);
 
-  if (!errors.isEmpty() || req.validatorFileError) {
-    if (req.file) {
-      const filePath = req.file.path;
-      fs.unlink(filePath);
-    }
+  if (!errors.isEmpty()) {
     const arrayError = errors.array().map((err) => {
       return {
-        field: err.path,
         message: err.msg,
       };
     });
 
-    if (req.validatorFileError) {
-      arrayError.push({
-        field: "profil",
-        message: req.validatorFileError,
-      });
-    }
     return resGagal(res, 400, "error", "Terjadi kesalahan", arrayError);
   }
   next();

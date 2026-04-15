@@ -18,11 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "activities",
       });
-
-      User.hasMany(models.Habits, {
-        foreignKey: "user_id",
-        as: "habits",
-      });
     }
   }
   User.init(
@@ -42,9 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       password: {
-        type: DataTypes.STRING,
-      },
-      profile: {
         type: DataTypes.STRING,
       },
     },

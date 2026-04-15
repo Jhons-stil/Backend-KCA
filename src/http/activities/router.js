@@ -16,5 +16,5 @@ const router = express.Router();
 router.post("/create", verifyToken, cekActivities, cekError, createActivities);
 router.get("/", verifyToken, readActivities);
 router.patch("/update/:id", verifyToken, cekActivitiesUpdate, updateActivities);
-router.delete("/delete", verifyToken, deleteActivities);
+router.delete("/delete/:id", verifyToken, deleteActivities);
 module.exports = router;

@@ -4,6 +4,7 @@ const {
   tampilActivities,
   cariActivitiById,
   ubahActivities,
+  hapusActivities,
 } = require("./service");
 
 const createActivities = async (req, res) => {
@@ -70,7 +71,7 @@ const updateActivities = async (req, res) => {
 
 const deleteActivities = async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     const userId = req.user.id;
 
     const dataActivities = await cariActivitiById(id);
@@ -82,6 +83,9 @@ const deleteActivities = async (req, res) => {
     if (dataActivities.user_id !== userId) {
       return resGagal(res, 403, "error", "Maaf, akses ditolak!!");
     }
+
+    await hapusActivities(id);
+    return resSukses(res, 200, "success", "Data berhasil dihapus");
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
   }

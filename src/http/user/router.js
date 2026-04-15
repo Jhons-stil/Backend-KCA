@@ -12,7 +12,7 @@ const {
   cekUpdateUser,
   cekpassword,
 } = require("../../middlewares/middlewareUser/usermiddleware.js");
-const upload = require("../../middlewares/middlewareUser/middlewareMulter.js");
+
 const verifyToken = require("../../middlewares/midlewareJwt/jwtMiddleware.js");
 
 const router = express.Router();
@@ -23,7 +23,7 @@ router.get("/user", readUser);
 router.patch(
   "/update/user",
   verifyToken,
-  upload.single("profile"),
+
   cekUpdateUser,
   cekError,
   updateUser,
