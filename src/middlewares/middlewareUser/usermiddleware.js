@@ -66,9 +66,9 @@ cekUpdateUser = [
     .notEmpty()
     .withMessage("Username wajib diisi")
     .bail()
-    .isLength({ min: 5 })
+    .isLength({ min: 3 })
     .bail()
-    .withMessage("username minimal 5 karakter"),
+    .withMessage("username minimal 3 karakter"),
   body("email")
     .optional({ checkFalsy: true })
     .notEmpty()
