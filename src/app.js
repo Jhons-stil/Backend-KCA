@@ -10,13 +10,7 @@ const routerDashboard = require("./http/dashboard/route.js");
 const app = express();
 const PORT = 3000;
 
-const corsOptions = {
-  origin: "https://nexora.psjpetik.my.id",
-  methods: "GET,POST,PUT,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
