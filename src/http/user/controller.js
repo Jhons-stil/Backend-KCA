@@ -71,13 +71,30 @@ const updateUser = async (req, res) => {
 
     const { username, email } = req.body;
 
+    let foto = user.profile;
+
+    if (req.file) {
+      const oldFoto = path.join(__dirname, "../uploads", foto);
+      if (fs.existsSync(oldFoto)) {
+        fs.unlinkSync(oldFoto);
+      }
+      foto = path.basename(req.file.path);
+    }
     const dataNew = {
       username: username || user.username,
       email: email || user.email,
+      profile: foto || user.profile,
     };
 
     const data = await ubahUser(user.id, dataNew);
-    return resSukses(res, 200, "success", "Data berhasil diubah", data);
+
+    const result = {
+      ...data.toJSON(),
+      url: data.profile
+        ? `${req.protocol}://${req.get("host")}/uploads/${data.profile}`
+        : null,
+    };
+    return resSukses(res, 200, "success", "Data berhasil diubah", result);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
   }
