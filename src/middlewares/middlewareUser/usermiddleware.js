@@ -39,8 +39,8 @@ const cekRegister = [
     .isLength({ min: 3 })
     .withMessage("Nama minimal 3 karakter")
     .bail()
-    .isLength({ max: 20 })
-    .withMessage("Nama maksimal 20 karakter")
+    .isLength({ max: 100 })
+    .withMessage("Nama maksimal 100 karakter")
     .custom(async (value) => {
       const user = await User.findOne({ where: { username: value } });
 
