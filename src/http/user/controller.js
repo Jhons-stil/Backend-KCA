@@ -3,6 +3,7 @@ require("dotenv");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
+const fs = require("fs");
 
 const { tambahUser, tampilUser, ubahUser, findEmail } = require("./service");
 const { resSukses, resGagal } = require("../../payloads/payload.js");
@@ -74,24 +75,29 @@ const updateUser = async (req, res) => {
     let foto = user.profile;
 
     if (req.file) {
-      const oldFoto = path.join(__dirname, "../uploads", foto);
-      if (fs.existsSync(oldFoto)) {
-        fs.unlinkSync(oldFoto);
+      if (foto && typeof foto === "string") {
+        const oldFoto = path.join(__dirname, "../../uploads", foto);
+        if (fs.existsSync(oldFoto)) {
+          fs.unlinkSync(oldFoto);
+        }
       }
-      foto = path.basename(req.file.path);
+
+      foto = req.file.filename;
     }
     const dataNew = {
       username: username || user.username,
       email: email || user.email,
-      profile: foto || user.profile,
+      profile: foto,
     };
 
     const data = await ubahUser(user.id, dataNew);
 
+    const dataJson = data.get({ plain: true });
+
     const result = {
-      ...data.toJSON(),
-      url: data.profile
-        ? `${req.protocol}://${req.get("host")}/uploads/${data.profile}`
+      ...dataJson,
+      url: dataJson.profile
+        ? `${req.protocol}://${req.get("host")}/uploads/${dataJson.profile}`
         : null,
     };
     return resSukses(res, 200, "success", "Data berhasil diubah", result);

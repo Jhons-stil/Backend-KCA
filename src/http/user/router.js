@@ -14,6 +14,7 @@ const {
 } = require("../../middlewares/middlewareUser/usermiddleware.js");
 
 const verifyToken = require("../../middlewares/midlewareJwt/jwtMiddleware.js");
+const uploadFoto = require("../../middlewares/multer.js");
 
 const router = express.Router();
 
@@ -23,9 +24,9 @@ router.get("/user", readUser);
 router.patch(
   "/update/user",
   verifyToken,
-
   cekUpdateUser,
   cekError,
+  uploadFoto,
   updateUser,
 );
 router.patch(
