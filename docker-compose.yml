@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: projek-ti-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: projek_ti
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: .
+    container_name: projek-ti-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USERNAME: user
+      DB_PASS: password
+      DB_NAME: projek_ti
+      DB_DIALECT: mysql
+    depends_on:
+      - db
+    command: ["node", "src/app.js"]
+
+volumes:
+  db_data:
