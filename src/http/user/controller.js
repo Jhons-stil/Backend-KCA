@@ -60,7 +60,19 @@ const login = async (req, res) => {
 const readUser = async (req, res) => {
   try {
     const data = await tampilUser();
-    return resSukses(res, 200, "success", "Data user", data);
+    const result = data.map((user) => {
+      const userJson = user.get({ plain: true });
+      return {
+        ...userJson,
+        url: userJson.profile
+          ? `${req.protocol}://${req.get("host")}/uploads/${userJson.profile}`
+          : null,
+        coverUrl: userJson.cover
+          ? `${req.protocol}://${req.get("host")}/uploads/${userJson.cover}`
+          : null,
+      };
+    });
+    return resSukses(res, 200, "success", "Data user", result);
   } catch (error) {
     return resGagal(res, 500, "error", error.message);
   }
@@ -70,11 +82,14 @@ const updateUser = async (req, res) => {
   try {
     const user = req.user;
 
-    const { username, email } = req.body;
+    const { username, email, description } = req.body;
+
+    const files = req.files || {};
+    const profileFile = files.profile ? files.profile[0] : null;
+    const coverFile = files.cover ? files.cover[0] : null;
 
     let foto = user.profile;
-
-    if (req.file) {
+    if (profileFile) {
       if (foto && typeof foto === "string") {
         const oldFoto = path.join(__dirname, "../../uploads", foto);
         if (fs.existsSync(oldFoto)) {
@@ -82,12 +97,27 @@ const updateUser = async (req, res) => {
         }
       }
 
-      foto = req.file.filename;
+      foto = profileFile.filename;
     }
+
+    let bingkai = user.cover;
+    if (coverFile) {
+      if (bingkai && typeof bingkai === "string") {
+        const oldBingkai = path.join(__dirname, "../../uploads", bingkai);
+        if (fs.existsSync(oldBingkai)) {
+          fs.unlinkSync(oldBingkai);
+        }
+      }
+
+      bingkai = coverFile.filename;
+    }
+
     const dataNew = {
       username: username || user.username,
       email: email || user.email,
+      description: description || user.description,
       profile: foto,
+      cover: bingkai,
     };
 
     const data = await ubahUser(user.id, dataNew);
@@ -98,6 +128,9 @@ const updateUser = async (req, res) => {
       ...dataJson,
       url: dataJson.profile
         ? `${req.protocol}://${req.get("host")}/uploads/${dataJson.profile}`
+        : null,
+      coverUrl: dataJson.cover
+        ? `${req.protocol}://${req.get("host")}/uploads/${dataJson.cover}`
         : null,
     };
     return resSukses(res, 200, "success", "Data berhasil diubah", result);

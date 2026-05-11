@@ -43,6 +43,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      description:{
+        type: DataTypes.TEXT,
+      },
+      cover: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      }
     },
     {
       sequelize,

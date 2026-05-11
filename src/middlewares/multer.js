@@ -34,7 +34,10 @@ const upload = multer({
 });
 
 const uploadFoto = (req, res, next) => {
-  upload.single("profile")(req, res, (err) => {
+  upload.fields([
+    { name: "profile", maxCount: 1 },
+    { name: "cover", maxCount: 1 },
+  ])(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       let message = "Upload gagal";
 
